@@ -19,7 +19,7 @@ class Booking extends Model
         'end_time', 
         'day_of_week',
          'status', 
-         'book_start',
+         'book_from',
          'book_until'
     ];
 

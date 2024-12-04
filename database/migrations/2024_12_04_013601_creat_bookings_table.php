@@ -22,7 +22,7 @@ return new class extends Migration
             $table->time('end_time');
             $table->string('day_of_week');
             $table->string('status');
-            $table->string('book_start');
+            $table->string('book_from');
             $table->string('book_until');
             $table->timestamps();
         });

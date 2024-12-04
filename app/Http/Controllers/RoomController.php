@@ -13,12 +13,11 @@ class RoomController extends Controller
      * http://localhost/8000/api/rooms/retrieve
      */
 
-     public function index(){
-        $room = Room::all();
+     public function index(Request $request){
         return response()->json([
             'ok' => true,
             'message' => 'Retrieved Successfully',
-            'data' => $room
+            'data' =>  Room::all()
         ], 200);
      }
 
@@ -60,8 +59,7 @@ class RoomController extends Controller
        * http://localhost/8000/api/rooms/show/{id}
        */
 
-       public function show($id){
-        $room = Room::find($id);
+       public function show(Request $request, Room $room){
         $room->bookings;
         return response()->json([
             'ok' => true,
@@ -76,7 +74,7 @@ class RoomController extends Controller
         * http://localhost/8000/api/rooms/update/{id}
         */
 
-        public function update(Request $request, $id){
+        public function update(Request $request, Room $room){
             $validator = validator($request->all(), [
                 'room_name' => 'required | max:30',
                 'room_type_id' => 'required | exists:room_types,id',
@@ -99,7 +97,6 @@ class RoomController extends Controller
                 ], 400);
             }
 
-            $room = Room::find($id);
             $room->update($validator->validated());
             return response()->json([
                 'ok' => true,
@@ -114,8 +111,7 @@ class RoomController extends Controller
          * http://localhost/8000/api/rooms/delete/{id}
          */
 
-         public function destroy($id){
-            $room = Room::find($id);
+         public function destroy(Request $request, Room $room){
             $room->delete();
             return response()->json([
                 'ok' => true,
@@ -123,35 +119,4 @@ class RoomController extends Controller
                 'data' => $room
             ], 200);
          }
-
-         /**
-           * Search Function
-           * method: POST
-           * http://localhost:8000/api/rooms/search
-           */
-
-           public function search(Request $request){
-            $validator = validator($request->all(), [
-                'search' => 'required'
-            ]);
-
-           
-            if($validator->fails()){
-                return response()->json([
-                    'ok' => false,
-                    'message' => 'Search Failed',
-                    'errors' => $validator->errors()
-                ], 400);
-            }  
-
-            $rooms = Room::where('room_name', 'like', '%'.$validator->validated()['search'].'%')->get();
-
-
-
-            return response()->json([
-                "ok" => true,
-                "message" => "Find successfully",
-                "data" => $rooms
-            ], 200);
-    }
 }

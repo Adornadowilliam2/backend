@@ -15,7 +15,7 @@ class BookingController extends Controller
      * http://localhost:8000/api/bookings/retrieve
      */
 
-     public function index(){
+     public function index(Request $request){
         return response()->json([
             'ok' => true,
             'message' => 'Retrieved Successfully',
@@ -40,7 +40,7 @@ class BookingController extends Controller
             'end_time' => 'required | date_format:H:i',
             'day_of_week' => 'required | max:10',
             'status' => 'sometimes | max:10',
-            'book_start' => 'required | date',
+            'book_from' => 'required | date',
             'book_until' => 'required | date'
         ]);
 
@@ -73,7 +73,7 @@ class BookingController extends Controller
                 'end_time' => $request->end_time,
                 'day_of_week' => $request->day_of_week,
                 'status' => "pending",
-                'book_start' => $request->book_start,
+                'book_from' => $request->book_from,
                 'book_until' => $request->book_until
             ]);
 
@@ -93,13 +93,11 @@ class BookingController extends Controller
        * http://localhost:8000/api/bookings/show/{id}
        */
 
-       public function show($id){
-        $room = Booking::find($id);
-        $room->bookings;
+       public function show(Request $request, Booking $booking){
         return response()->json([
             'ok' => true,
             'message' => 'Retrieved Successfully',
-            'data' => $room
+            'data' => $booking
         ], 200);
        }
 
@@ -129,7 +127,7 @@ class BookingController extends Controller
                 'end_time' => 'required | date',
                 'day_of_week' => 'required | max:10',
                 'status' => 'sometimes | max:10',
-                'book_start' => 'required | date',
+                'book_from' => 'required | date',
                 'book_until' => 'required | date'
             ]);
 

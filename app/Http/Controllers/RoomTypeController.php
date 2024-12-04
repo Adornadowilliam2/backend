@@ -53,7 +53,7 @@ class RoomTypeController extends Controller
      * http://localhost:8000/api/room-types/{id}
      */
 
-     public function update(Request $request, $id){
+     public function update(Request $request, RoomType $room_type){
         $validator = validator($request->all(), [
             'room_type' => 'required | max:30 | unique:room_types,room_type,'.$id
         ]);
@@ -66,7 +66,6 @@ class RoomTypeController extends Controller
             ], 400);
         }
         
-        $room_type = RoomType::find($id);
         $room_type->update($validator->validated());
         return response()->json([
             'ok' => true,
@@ -82,8 +81,7 @@ class RoomTypeController extends Controller
      * http://localhost:8000/api/room-types/{id}
      */
 
-     public function destroy($id){
-        $room_type = RoomType::find($id);
+     public function destroy(Request $request, RoomType $room_type){
         $room_type->delete();
         return response()->json([
             'ok' => true,

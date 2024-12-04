@@ -17,24 +17,24 @@ Route::middleware("auth:api")->get("/users", [UserController::class, 'index']);
 
 Route::prefix('/rooms')->middleware(['auth:api'])->group(function(){
     Route::get('/',[RoomController::class,'index']);
-    Route::get('/{id}',[RoomController::class,'show']);
+    Route::get('/{room}',[RoomController::class,'show']);
     Route::post('/',[RoomController::class,'create']);
-    Route::patch('/{id}',[RoomController::class,'update']);
-    Route::delete('/{id}',[RoomController::class,'destroy']);
+    Route::patch('/{room}',[RoomController::class,'update']);
+    Route::delete('/{room}',[RoomController::class,'destroy']);
 });
 
 Route::prefix('/bookings')->middleware(['auth:api'])->group(function(){        
     Route::get('/',[BookingController::class,'index']);
-    Route::get('/{id}',[BookingController::class,'show']);
+    Route::get('/{booking}',[BookingController::class,'show']);
     Route::post('/',[BookingController::class,'store']);
-    Route::post('/{id}',[BookingController::class,'update']);
-    Route::delete('/{id}',[BookingController::class,'destroy']);
+    Route::post('/{booking}',[BookingController::class,'update']);
+    Route::delete('/{booking}',[BookingController::class,'destroy']);
 });
 
 
 Route::prefix('/room-types')->middleware(['auth:api'])->group(function(){
     Route::get('/',[RoomTypeController::class,'index']);
     Route::post('/',[RoomTypeController::class,'create']);
-    Route::patch('/{id}',[RoomTypeController::class,'update']);
-    Route::delete('/{id}',[RoomTypeController::class,'destroy']);
+    Route::post('/{room-type}',[RoomTypeController::class,'update']);
+    Route::delete('/{room-type}',[RoomTypeController::class,'destroy']);
 });
