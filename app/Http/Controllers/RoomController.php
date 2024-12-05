@@ -29,15 +29,15 @@ class RoomController extends Controller
 
       public function create(Request $request){
         $validator = validator($request->all(), [
-            'room_name' => 'required | max:30',
-            'room_type_id' => 'required | exists:room_types,id',
-            'location' => 'required | max:30',
-            'description' => 'required | max:255',
-            'capacity' => 'required | numeric | max:100',
-            'image' => 'sometimes | images | mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'room_name' => 'required|max:30',
+            'room_type_id' => 'required|exists:room_types,id',
+            'location' => 'required|max:30',
+            'description' => 'required|max:255',
+            'capacity' => 'required|numeric|max:100',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json([
                 'ok' => false,
                 'message' => 'Room Creation Failed',
@@ -45,7 +45,16 @@ class RoomController extends Controller
             ], 400);
         }
 
-        $room = Room::create($validator->validated());
+        $validated = $validator->validated();
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('images'), $imageName);
+            $validated['image'] = $imageName;
+        }
+
+        $room = Room::create($validated);
         return response()->json([
             'ok' => true,
             'message' => 'Room Created Successfully',

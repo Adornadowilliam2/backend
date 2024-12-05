@@ -52,6 +52,7 @@ class DatabaseSeeder extends Seeder
             "location" => "393 St",
             "description" => "This is a seminar room",
             "capacity" => 30,
+            "image" => "https://images7.memedroid.com/images/UPLOADED950/6045883e4739b.jpeg"
         ]);
 
         Artisan::call('passport:keys');
